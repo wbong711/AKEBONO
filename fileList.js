@@ -2,6 +2,7 @@
 
 const filesToDisplay = [
     "security_trade_management_flowchart.html",
-    "sales_insight_report_suggestion"
+    "sales_insight_report_suggestion.html"
 
 ];
+
