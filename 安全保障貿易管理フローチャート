@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全保障貿易管理フローチャート</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .organization-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            border-left: 6px solid #1976d2;
+        }
+        
+        .org-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .org-chart {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .role-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 3px solid;
+            min-width: 300px;
+            transition: transform 0.3s ease;
+        }
+        
+        .role-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .role-box.ceo {
+            border-color: #f44336;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        }
+        
+        .role-box.manager {
+            border-color: #ff9800;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        }
+        
+        .role-box.staff {
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+        }
+        
+        .role-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .role-box.ceo .role-title {
+            color: #d32f2f;
+        }
+        
+        .role-box.manager .role-title {
+            color: #f57c00;
+        }
+        
+        .role-box.staff .role-title {
+            color: #388e3c;
+        }
+        
+        .role-content {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .flowchart-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border-radius: 15px;
+            border-left: 6px solid #7b1fa2;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #4a148c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .mermaid-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mermaid {
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .flow-step {
+            background: white;
+            border: 3px solid #673ab7;
+            border-radius: 12px;
+            padding: 15px 25px;
+            min-width: 280px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .flow-step:hover {
+            transform: scale(1.05);
+            border-color: #3f51b5;
+        }
+        
+        .flow-step.start {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .flow-step.decision {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-color: #ff9800;
+            border-radius: 50px;
+        }
+        
+        .flow-step.process {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-color: #2196f3;
+        }
+        
+        .flow-step.end {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-color: #f44336;
+            font-weight: bold;
+        }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid #673ab7;
+            margin: 0 auto;
+        }
+        
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .process-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid #9c27b0;
+            transition: transform 0.3s ease;
+        }
+        
+        .process-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .process-card h3 {
+            color: #7b1fa2;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .process-steps {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .process-steps li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .process-steps li:before {
+            content: "•";
+            color: #9c27b0;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+        
+        .sub-steps {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+            padding-left: 15px;
+        }
+        
+        .sub-steps li {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+            line-height: 1.4;
+            font-size: 0.9em;
+        }
+        
+        .sub-steps li:before {
+            content: "◦";
+            color: #9c27b0;
+            font-size: 1.2em;
+            position: absolute;
+            left: 0;
+            top: 0px;
+        }
+        
+        .criteria-section {
+            background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+            border-left: 6px solid #00695c;
+        }
+        
+        .criteria-section .section-title {
+            color: #004d40;
+        }
+        
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .criteria-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid #00838f;
+        }
+        
+        .criteria-card h3 {
+            color: #006064;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .org-chart {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .role-box {
+                min-width: 250px;
+            }
+            
+            .criteria-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>安全保障貿易管理のための社内ルール</h1>
+        
+        <div class="organization-section">
+            <div class="org-title">組織と役割</div>
+            <div class="org-chart">
+                <div class="role-box ceo">
+                    <div class="role-title">最高責任者</div>
+                    <div class="role-content">
+                        <strong>担当者：</strong>代表取締役<br>
+                        <strong>役割：</strong><br>
+                        • 安全保障輸出管理全般<br>
+                        • 該当品取引の最終承認
+                    </div>
+                </div>
+                
+                <div class="role-box manager">
+                    <div class="role-title">該非確認責任者</div>
+                    <div class="role-content">
+                        <strong>担当者：</strong>海外業務部門責任者<br>
+                        <strong>役割：</strong><br>
+                        • 輸出管理内部規程の制定・改廃<br>
+                        • 該非判定及び取引の審査・承認<br>
+                        • 監査（毎年1月）<br>
+                        • 教育・指導
+                    </div>
+                </div>
+                
+                <div class="role-box staff">
+                    <div class="role-title">輸出管理責任者</div>
+                    <div class="role-content">
+                        <strong>担当者：</strong>海外営業部門員<br>
+                        <strong>役割：</strong><br>
+                        • 該非確認責任者の指示徹底<br>
+                        • 輸出管理手続業務の推進<br>
+                        • 教育活動
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flowchart-section">
+            <div class="section-title">業務フロー</div>
+            <div class="mermaid-container">
+                <div class="mermaid">
+                    flowchart TD
+                    A[引き合い] --> B(（営業・業務担当者）<br/>輸出案件である)
+                    
+                    B -->|知らない| C(（営業・業務担当者）<br/>業務手順（１）<br/>輸出有無の把握)
+                    B -->|はい| D(（輸出管理責任者）<br/>業務手順（２）<br/>取引審査の要否確認)
+                    B -->|いいえ| E[手続き不要]
+                    
+                    C --> B
+                    
+                    D -->|判断不可・必要| F(（該非確認責任者）<br/>取引審査)
+                    D -->|不要| G[取引許可]
+                
+                    F -->|懸念なし| H(（最高責任者）<br/>最終承認審査) 
+                    F -->|懸念あり| I[終了] 
+                    
+                    H -->|同意| G
+                    H -->|却下| I
+                
+                    G -->|納品|J(（営業・業務担当者）<br/>業務手順（３）<br/>出荷管理)
+                
+                classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px,color:#333
+                classDef decision fill:#E3DAEF,stroke:#666,stroke-width:2px,color:#333
+                classDef process fill:#FFF3E6,stroke:#333,stroke-width:2px,color:#333
+                classDef terminal fill:#E7F0E7,stroke:#333,stroke-width:2px,color:#333
+                    
+                    class C,D,J decision
+                    class B,F,H process
+                    class A,G,I,E terminal
+                </div>
+            </div>
+        </div>
+        
+        <div class="flowchart-section">
+            <div class="section-title">業務手順詳細</div>
+            <div class="process-grid">
+                <div class="process-card">
+                    <h3>（１）輸出有無の把握</h3>
+                    <ul class="process-steps">
+                        <li><strong>対象：</strong>国内納品分で輸出されないことが明確でない取引</li>
+                        <li><strong>方法①：</strong>見積受付時に輸出の有無を直接確認</li>
+                        <li><strong>方法②：</strong>条件付き見積提出（国内使用想定、海外案件は詳細連絡要）
+                            <ul class="sub-steps">
+                                <li>回答なしは国内案件とみなす</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="process-card">
+                    <h3>（２）取引審査の要否確認</h3>
+                    <ul class="process-steps">
+                        <li><strong>対象：</strong>輸出になるとわかったすべての取引</li>
+                        <li><strong>時点：</strong>見積時点（推奨）または受注時点</li>
+                        <li><strong>方法：</strong>kintoneの「海」安全保障貿易管理アプリより申請書作成・依頼
+                            <ul class="sub-steps">
+                                <li>審査に必要な資料を揃えたうえで申請</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="process-card">
+                    <h3>（３）出荷管理</h3>
+                    <ul class="process-steps">
+                        <li><strong>対象：</strong>取引審査で承認を受けたすべての貨物・技術</li>
+                        <li><strong>方法：</strong>承認済みレコードに出荷情報を追加して提出</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flowchart-section criteria-section">
+            <div class="section-title">審査基準</div>
+            <div class="criteria-grid">
+                <div class="criteria-card">
+                    <h3>リスト規制</h3>
+                    <p><strong>確認内容：</strong>対象の貨物・技術が大量破壊兵器や通常兵器の開発等に用いられる可能性のある貨物・技術として分類されているか</p>
+                    <br>
+                    <p><strong>判断基準および入手方法：</strong></p>
+                    <ul class="process-steps">
+                        <li>該非判定書、HPのURL、口頭確認（社名、担当者、確認時刻記入）により判定根拠を提出</li>
+                        <li>入手負荷の場合、社内判定のため、仕様書やパラメータシートを提出</li>
+                        <li>前歴を流用（同一案件・条件の場合のみ）</li>
+                    </ul>
+                </div>
+                
+                <div class="criteria-card">
+                    <h3>キャッチオール規制</h3>
+                    <p><strong>確認内容：</strong>リスト規制対象以外の貨物・技術でも、大量破壊兵器や通常兵器の開発等に用いられるおそれがあるか</p>
+                    <br>
+                    <p><strong>判断基準：</strong></p>
+                    <ul class="process-steps">
+                        <li>エンドユーザー・用途より輸出管理責任者が判断</li>
+                        <li>前歴流用（貨物・技術、エンドユーザー、用途が一致する場合のみ）
+                            <ul class="sub-steps">
+                                <li>※最新の法令適用時のみ省略可能</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                fontFamily: 'Hiragino Sans, Meiryo, sans-serif'
+            }
+        });
+    </script>
+</body>
+</html>
