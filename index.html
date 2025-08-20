@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>Kay's GitHub Pages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf0;
+            color: #333;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            color: #7a68a6;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        a {
+            color: #5a4d7b;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>File List</h1>
+    <ul id="file-list"></ul>
+
+    <!-- ✨ fileList.js 파일을 먼저 불러와야 해! -->
+    <script src="fileList.js"></script>
+
+    <script>
+        // fileList.js에서 정의된 filesToDisplay 배열을 사용
+        const ul = document.getElementById("file-list");
+
+        filesToDisplay.forEach(filename => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = filename;
+            a.textContent = filename;
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+    </script>
+</body>
+</html>
